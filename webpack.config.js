@@ -1,27 +1,30 @@
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  devtool: 'source-map',
   entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    clean: true
+    path: path.resolve(__dirname, 'build'),
+    clean: true,
   },
+  devtool: 'source-map',
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [{from: 'public'}]
+    new CopyPlugin({
+      patterns: [{ from: 'public' }],
     }),
   ],
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: [
-          { loader: 'babel-loader'}
-        ]
-      }
+        {
+          test: /\.js$/,
+          exclude: /(node_modules)/,
+          use: ['babel-loader']
+        },
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader']
+        }
     ]
   }
-}
+};
