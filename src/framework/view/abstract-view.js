@@ -30,11 +30,13 @@ export default class AbstractView {
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
+      this.afterCreateElement();
     }
 
     return this.#element;
   }
 
+  afterCreateElement() { return 0; }
   /**
    * Геттер для получения разметки элемента
    * @abstract
@@ -48,6 +50,24 @@ export default class AbstractView {
   removeElement() {
     this.#element = null;
   }
+
+  delete() {
+    if (this.isActive()) {
+      this.#element.remove();
+      this.removeElement();
+    }
+  }
+
+  /** Проверка, что элемент существует и находится на странице */
+  isActive() {
+    return this.isElementExist() && this.#element.isConnected;
+  }
+
+  /** Проверка, что элемент существует */
+  isElementExist() {
+    return Boolean(this.#element);
+  }
+
 
   /**
    * Метод, реализующий эффект "покачивания головой"
