@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import AbstractView from '../framework/view/abstract-view';
+import AbstractView from '../framework/view/abstract-view.js';
 import AddEventForm from './add-event-form.js';
 import { capitalize } from '../util.js';
-import { destinations, offers } from '../model/trip-event';
+import { destinations, offers } from '../model/trip-event.js';
 
 const createTripEventTemplate = (tripEvent) => {
   const dateFrom = dayjs(tripEvent.date_from);

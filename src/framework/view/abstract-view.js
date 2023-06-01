@@ -37,6 +37,7 @@ export default class AbstractView {
   }
 
   afterCreateElement() { return 0; }
+
   /**
    * Геттер для получения разметки элемента
    * @abstract
@@ -67,7 +68,6 @@ export default class AbstractView {
   isElementExist() {
     return Boolean(this.#element);
   }
-
 
   /**
    * Метод, реализующий эффект "покачивания головой"

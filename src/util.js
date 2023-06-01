@@ -1,5 +1,4 @@
 export function getRandomInt(from, to) {
-  // Get random Int in range: [from, to)
   if (to < from) {
     throw Error('Incorrect range');
   }
@@ -7,12 +6,10 @@ export function getRandomInt(from, to) {
 }
 
 export function getTrueWithChance(chance = 0.5) {
-  // Gets true with given chance. chance is float between 0 and 1
   return Math.random() < chance;
 }
 
 export function getLoremIpsum(wordsNumber) {
-  // Get lorem ipsum text with given words number
   const loremIpsumText = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -38,9 +35,6 @@ export function getRandomElement(array) {
 }
 
 export function sample(array, k) {
-  // Gets k random unique elements from array.
-  // Similar to python random.sample()
-
   const n = array.length;
   if (n < k) {
     throw new Error(`Can't get ${k} unique elements from array with length ${n}`);
@@ -48,7 +42,6 @@ export function sample(array, k) {
     return [...array];
   }
 
-  // not very optimal solution
   const resultIndexes = new Set();
   for (let i = 0; i < k; ++i) {
     let currentIndex;
