@@ -1,7 +1,7 @@
-import { generateTripEvents } from './trip-event';
+import { generateTripEvents } from './trip-event.js';
 
 export default class TripModel {
-  #tripEvents = generateTripEvents(2);
+  #tripEvents = generateTripEvents(3);
 
   get tripEvents() {
     return this.#tripEvents;
