@@ -63,3 +63,17 @@ export function capitalize(string) {
   }
   return string[0].toUpperCase() + string.substring(1).toLowerCase();
 }
+
+export const changeItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1),
+  ];
+};
