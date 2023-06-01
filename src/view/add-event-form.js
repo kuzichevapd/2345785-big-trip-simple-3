@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import AbstractView from '../framework/view/abstract-view';
-import TripEvent from './trips-event';
-import { destinations, generateOffers, offers } from '../model/trip-event';
-import { TRIP_EVENT_TYPES } from '../const-data';
-import { capitalize } from '../util';
+import AbstractView from '../framework/view/abstract-view.js';
+import TripEvent from './trips-event.js';
+import { destinations, generateOffers, offers } from '../model/trip-event.js';
+import { TRIP_EVENT_TYPES } from '../const-data.js';
+import { capitalize } from '../util.js';
 
 const FormMode = {
   NEW: 'NEW',
