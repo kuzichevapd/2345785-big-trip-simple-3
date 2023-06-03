@@ -1,4 +1,3 @@
-import CreationForm from '../view/creation-form.js';
 import Sorting from '../view/event-sorting-form.js';
 import WaypointList from '../view/events-list-form.js';
 import NoWaypointMessage from '../view/empty-list.js';
@@ -6,6 +5,9 @@ import {render, RenderPosition} from '../framework/render.js';
 import WaypointPresenter from './trip-points-presenter.js';
 import {SortType} from '../mock/const-data.js';
 import {sorts} from '../mock/sort-type.js';
+import EditForm from '../view/edit-form.js';
+import { changeWaypoint } from '../util.js';
+
 
 export default class Presenter {
   #waypointListComponent = new WaypointList();
@@ -14,20 +16,25 @@ export default class Presenter {
   #waypointPresenter = new Map();
   #currentSortType = SortType.DAY;
   #sourcedWaypoints = [];
-
   #boardContainer = null;
   #waypointsModel = null;
   #waypoints = null;
+  #offers = [];
+  #destinations = [];
+  #modelOfOffers = null;
+  #modelOfDestinations = null;
 
-  constructor({boardContainer, waypointsModel}) {
+  constructor({boardContainer, waypointsModel, modelOfOffers, modelOfDestinations}) {
     this.#boardContainer = boardContainer;
     this.#waypointsModel = waypointsModel;
+    this.#modelOfOffers = modelOfOffers;
+    this.#modelOfDestinations = modelOfDestinations;
   }
 
   init() {
-    this.#waypoints = [...this.#waypointsModel.arrWaypoints];
+    this.#waypoints = [...this.#waypointsModel.waypoints];
     this.#renderBoard();
-    this.#sourcedWaypoints = [...this.#waypointsModel.arrWaypoints];
+    this.#sourcedWaypoints = [...this.#waypointsModel.waypoints];
   }
 
   #renderSort() {
@@ -46,20 +53,19 @@ export default class Presenter {
   #renderWaypoint(waypoint) {
     const waypointPresenter = new WaypointPresenter({
       waypointList: this.#waypointListComponent.element,
-      onModeChange: this.#handleModeChange
+      offers: this.#offers,
+      destinations: this.#destinations,
+      onDataChange: this.#handleWaypointChange,
+      onModeChange: this.#handleModeChange,
     });
 
-    waypointPresenter.init(waypoint);
+    waypointPresenter.init(waypoint, this.destinations, this.offers);
     this.#waypointPresenter.set(waypoint.id, waypointPresenter);
-  }
-
-  #renderWaypoints() {
-    this.#waypoints.forEach((waypoint) => this.#renderWaypoint(waypoint));
   }
 
   #renderWaypointsList() {
     render(this.#waypointListComponent, this.#boardContainer);
-    this.#renderWaypoints();
+    this.#waypoints.forEach((waypoint) => this.#renderWaypoint(waypoint));
   }
 
   #renderBoard() {
@@ -69,9 +75,18 @@ export default class Presenter {
     }
     this.#renderSort();
 
-    render(new CreationForm(this.#waypoints[0]), this.#waypointListComponent.element);
+    render(new EditForm({
+      destinations: this.#destinations,
+      offers: this.#offers,
+      isEditForm: false
+    }), this.#waypointListComponent.element);
     this.#renderWaypointsList();
   }
+
+  #handleWaypointChange = (updatedWaypoint) => {
+    this.#waypoints = changeWaypoint(this.#waypoints, updatedWaypoint);
+    this.#waypointPresenter.get(updatedWaypoint.id).init(updatedWaypoint, this.#destinations, this.#offers);
+  };
 
   #clearWaypointList() {
     this.#waypointPresenter.forEach((presenter) => presenter.destroy());
