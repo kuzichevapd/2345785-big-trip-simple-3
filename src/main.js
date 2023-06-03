@@ -1,13 +1,15 @@
-import TripPresenter from './presenter/presenter.js';
-import { render } from './framework/render.js';
-import FiltersView from './view/filters-form.js';
-import TripModel from './model/trip-model.js';
+import Filters from './view/filters-form.js';
+import Presenter from './presenter/presenter.js';
+import ModelWaypoint from './model/waypoints-model.js';
+import {mockInit, waypoints} from './mock/points-creation.js';
+import {render} from './framework/render.js';
 
-const tripFiltersBlock = document.querySelector('.trip-controls__filters');
-const tripEventsSection = document.querySelector('.trip-events');
+const siteHeaderElement = document.querySelector('.trip-controls__filters');
+const container = document.querySelector('.trip-events');
 
-const tripPresenter = new TripPresenter();
-const tripModel = new TripModel();
+mockInit(3, 10);
+const modelWaypoints = new ModelWaypoint(waypoints);
+const presenter = new Presenter({boardContainer: container, waypointsModel: modelWaypoints});
+render(new Filters(), siteHeaderElement);
+presenter.init();
 
-render(new FiltersView(), tripFiltersBlock);
-tripPresenter.init(tripEventsSection, tripModel);
