@@ -1,4 +1,4 @@
-import {getRandomId, getRandomItemFromItems, createIDgenerator} from '../util.js';
+import {getRandomItemFromItems, createIDgenerator} from '../util.js';
 import {descrText, cities} from './const-data.js';
 
 const destinations = [];
@@ -7,7 +7,7 @@ const generatePictures = () => {
   const pictures = [];
   for (let i = 0; i < 6; i++) {
     const picture = {
-      src: `http://picsum.photos/248/152?r=${getRandomId()}`,
+      src: 'img/photos/1.jpg',
       description: getRandomItemFromItems(descrText)
     };
     pictures.push(picture);
