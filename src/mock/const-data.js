@@ -176,7 +176,8 @@ export const cities = [
 
 export const FilterType = {
   EVERYTHING: 'everything',
-  FUTURE: 'future'
+  FUTURE: 'future',
+  PAST: 'past'
 };
 
 export const SortType = {
@@ -185,6 +186,32 @@ export const SortType = {
   TIME: 'time',
   PRICE: 'price',
   OFFER: 'offer'
+};
+
+export const FilterTypeDescription = {
+  [FilterType.EVERYTHING]: 'EVERYTHING',
+  [FilterType.PAST]: 'PAST',
+  [FilterType.FUTURE]: 'FUTURE',
+};
+
+export const SortTypeDescription = {
+  [SortType.DAY]: 'Day',
+  [SortType.EVENT]: 'Event',
+  [SortType.TIME]: 'Time',
+  [SortType.PRICE]: 'Price',
+  [SortType.OFFER]: 'Offer'
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export const UserAction = {
+  UPDATE_WAYPOINT: 'UPDATE_WAYPOINT',
+  ADD_WAYPOINT: 'ADD_WAYPOINT',
+  DELETE_WAYPOINT: 'DELETE_WAYPOINT',
 };
 
 
