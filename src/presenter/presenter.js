@@ -1,21 +1,21 @@
 import Sorting from '../view/event-sorting-form.js';
 import WaypointList from '../view/events-list-form.js';
 import NoWaypointMessage from '../view/empty-list-form.js';
-import {remove, render, RenderPosition} from '../framework/render.js';
+import {remove, render, RenderPosition} from '../framework/render';
 import WaypointPresenter from './waypoint-presenter.js';
-import {FilterType, SortType, UpdateType, UserAction} from '../mock/const-data.js';
-import {sorts} from '../mock/sort-type.js';
+import {FilterType, SortType, UpdateType, UserAction} from '../const-data.js';
+import {sorts} from '../sort.js';
 import {filter} from '../util.js';
 import NewWaypointPresenter from './new-waypoint-presenter.js';
+import LoadingView from '../view/loading-form.js';
 
 export default class Presenter {
   #waypointListComponent = new WaypointList();
   #waypointPresenter = new Map();
   #currentSortType = SortType.DAY;
-  #offers = [];
-  #destinations = [];
   #filterType = FilterType.EVERYTHING;
-
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
   #boardContainer = null;
   #waypointsModel = null;
   #modelOffers = null;
@@ -49,16 +49,22 @@ export default class Presenter {
     return (sorts[this.#currentSortType]) ? filteredWaypoints.sort(sorts[this.#currentSortType]) : filteredWaypoints;
   }
 
+  get destinations() {
+    return this.#modelDestinations.destinations;
+  }
+
+  get offers() {
+    return this.#modelOffers.offers;
+  }
+
   init() {
-    this.#offers = [...this.#modelOffers.offers];
-    this.#destinations = [...this.#modelDestinations.destinations];
     this.#renderBoard();
   }
 
   createWaypoint() {
     this.#currentSortType = SortType.DAY;
     this.#modelFilter.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newWaypointPresenter.init(this.#destinations, this.#offers);
+    this.#newWaypointPresenter.init(this.destinations, this.offers);
   }
 
   #renderSort() {
@@ -84,13 +90,13 @@ export default class Presenter {
   #renderWaypoint(waypoint) {
     const waypointPresenter = new WaypointPresenter({
       waypointList: this.#waypointListComponent.element,
-      offers: this.#offers,
-      destinations: this.#destinations,
+      offers: this.offers,
+      destinations: this.destinations,
       onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
     });
 
-    waypointPresenter.init(waypoint, this.#destinations, this.#offers);
+    waypointPresenter.init(waypoint, this.destinations, this.offers);
     this.#waypointPresenter.set(waypoint.id, waypointPresenter);
   }
 
@@ -99,6 +105,10 @@ export default class Presenter {
   }
 
   #renderBoard() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     const waypoints = this.waypoints;
     if (waypoints.length === 0) {
       this.#renderNoWaypoint();
@@ -109,6 +119,9 @@ export default class Presenter {
     this.#renderWaypointsList(waypoints);
   }
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+  }
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -136,7 +149,7 @@ export default class Presenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#waypointPresenter.get(data.id).init(data, this.#modelDestinations.destinations, this.#modelOffers.offers);
+        this.#waypointPresenter.get(data.id).init(data, this.destinations, this.offers);
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
@@ -144,6 +157,11 @@ export default class Presenter {
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderBoard();
         break;
     }
@@ -155,6 +173,7 @@ export default class Presenter {
     this.#waypointPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if (this.#noWaypointMessage) {
       remove(this.#noWaypointMessage);

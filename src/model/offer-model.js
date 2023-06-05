@@ -1,10 +1,20 @@
-import Observable from '../framework/observable.js';
+import Observable from '../framework/observable';
 export default class ModelOffers extends Observable{
   #offers = [];
+  #waypointsApi = null;
 
-  constructor(offers) {
+  constructor(waypointsApi) {
     super();
-    this.#offers = offers;
+    this.#waypointsApi = waypointsApi;
+    this.init();
+  }
+
+  async init() {
+    try {
+      this.#offers = await this.#waypointsApi.offers;
+    } catch (err) {
+      this.#offers = [];
+    }
   }
 
   get offers() {

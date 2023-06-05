@@ -1,11 +1,21 @@
-import Observable from '../framework/observable.js';
+import Observable from '../framework/observable';
 
 export default class ModelDestinations extends Observable {
   #destinations = null;
+  #waypointsApi = null;
 
-  constructor(destinations) {
+  constructor(waypointsApi) {
     super();
-    this.#destinations = destinations;
+    this.#waypointsApi = waypointsApi;
+    this.init();
+  }
+
+  async init() {
+    try {
+      this.#destinations = await this.#waypointsApi.destinations;
+    } catch(err) {
+      this.#destinations = [];
+    }
   }
 
   get destinations() {
