@@ -1,7 +1,7 @@
-import {render, RenderPosition} from '../render.js';
-import {UpdateType, UserAction} from '../mock/const-data.js';
+import {render, RenderPosition} from '../render';
+import {UpdateType, UserAction} from '../const-data.js';
 import EditForm from '../view/edit-form.js';
-import {remove} from '../framework/render.js';
+import {remove} from '../framework/render';
 import {isEsc} from '../util.js';
 import {nanoid} from 'nanoid';
 

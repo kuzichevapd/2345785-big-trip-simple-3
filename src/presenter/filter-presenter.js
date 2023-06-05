@@ -1,7 +1,7 @@
-import {FilterType, FilterTypeDescription, UpdateType} from '../mock/const-data.js';
+import {FilterType, FilterTypeDescription, UpdateType} from '../const-data.js';
 import Filters from '../view/filters-form.js';
-import {render} from '../render.js';
-import {remove, replace} from '../framework/render.js';
+import {render} from '../render';
+import {remove, replace} from '../framework/render';
 
 
 export default class FilterPresenter {

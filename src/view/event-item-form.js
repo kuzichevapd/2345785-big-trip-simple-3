@@ -1,5 +1,6 @@
 import {getDateDayAndMo, getDateWithoutT, getDateWithT, getTime, getItemFromItemsById} from '../util.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractView from '../framework/view/abstract-view';
+import he from 'he';
 
 function createOffersTemplate(selectedOffersIDs, offers, type) {
   const currentTypeOffers = offers.find((el) => el.type === type).offers;
@@ -14,8 +15,11 @@ function createOffersTemplate(selectedOffersIDs, offers, type) {
 }
 
 function createWaypointTemplate(oneWaypoint, destinations, offers) {
-
+  console.log(destinations);
+  console.log(offers);
+  console.log(oneWaypoint);
   const itemDest = getItemFromItemsById(destinations, oneWaypoint.destination);
+  console.log(itemDest);
   return (
     `<li class="trip-events__item">
     <div class="event">
@@ -23,7 +27,7 @@ function createWaypointTemplate(oneWaypoint, destinations, offers) {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${oneWaypoint.type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${oneWaypoint.type} ${itemDest.name}</h3>
+      <h3 class="event__title">${oneWaypoint.type} ${he.encode(itemDest.name)}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${getDateWithT(oneWaypoint.dateFrom)}">${getTime(oneWaypoint.dateFrom)}</time>

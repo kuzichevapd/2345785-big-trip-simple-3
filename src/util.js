@@ -1,30 +1,13 @@
 import dayjs from 'dayjs';
-import {FilterType} from './mock/const-data.js';
+import {FilterType} from './const-data.js';
 
 const EVENT_DATE_FORMAT = 'MMM D';
 const EVENT_TIME_FORMAT = 'H:mm';
 const EVENT_YEARS_FORMAT = 'DD/MM/YY HH:mm';
 
-export const getRandomItemFromItems = (items) => items[Math.floor(Math.random() * items.length)];
-
-export const getRandomPrice = () => Math.floor(Math.random() * 100000) + 777;
-
-export const getRandomSliceFromItems = (items) => {
-  const n = Math.floor(Math.random() * (items.length + 1));
-  const shuffled = [...items].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, n);
-};
-
-export const createIDgenerator = () => {
-  let id = 0;
-  return () => ++id;
-};
-
 export const isEsc = (evt) => evt.key === 'Escape';
 
 export const getItemFromItemsById = (items, id) => (items.find((item) => item.id === id));
-
-export const isTripDateBeforeToday = (date) => dayjs(date).isBefore(dayjs(), 'D') || dayjs(date).isSame(dayjs(), 'D');
 
 export const getDateWithoutT = (dateStr) => dateStr.substring(0, dateStr.indexOf('T'));
 
