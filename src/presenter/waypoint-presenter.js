@@ -1,8 +1,8 @@
 import {render, replace, remove} from '../framework/render';
-import WaypointView from '../view/events-list-form.js';
-import EditForm from '../view/edit-form.js';
-import {isDatesEqual, isEsc} from '../util.js';
-import {UpdateType, UserAction} from '../const-data.js';
+import EventsListView from '../view/events-list-form';
+import EditFormView from '../view/edit-form';
+import {isDatesEqual, isEsc} from '../util';
+import {UpdateType, UserAction} from '../const-data';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -36,14 +36,14 @@ export default class WaypointPresenter {
     const prevWaypointComponent = this.#waypointComponent;
     const prevEditFormComponent = this.#editFormComponent;
 
-    this.#waypointComponent = new WaypointView({
+    this.#waypointComponent = new EventsListView({
       oneWaypoint: this.#waypoint,
       onClick: this.#handleEditClick,
       offers: this.#offers,
       destinations: this.#destinations,
     });
 
-    this.#editFormComponent = new EditForm({
+    this.#editFormComponent = new EditFormView({
       oneWaypoint: waypoint,
       onSubmit: this.#handleFormSubmit,
       offers: this.#offers,

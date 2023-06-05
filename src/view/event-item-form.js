@@ -1,4 +1,4 @@
-import {getDateDayAndMo, getDateWithoutT, getDateWithT, getTime, getItemFromItemsById} from '../util.js';
+import {getDateDayAndMo, getDateWithoutT, getDateWithT, getTime, getItemFromItemsById} from '../util';
 import AbstractView from '../framework/view/abstract-view';
 import he from 'he';
 
@@ -46,7 +46,7 @@ function createWaypointTemplate(oneWaypoint, destinations, offers) {
   );
 }
 
-export default class WaypointView extends AbstractView {
+export default class EventItemView extends AbstractView {
   #oneWaypoint = null;
   #handleClick = null;
   #offers = null;

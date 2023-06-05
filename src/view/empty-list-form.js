@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import {FilterType} from '../const-data.js';
+import {FilterType} from '../const-data';
 
 const NoTasksTextType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
@@ -11,7 +11,7 @@ function createNoWaypoitsMessageTemplate(filterType) {
   return `<p class="trip-events__msg">${NoTasksTextType[filterType]}</p>`;
 }
 
-export default class NoWaypointMessage extends AbstractView {
+export default class EmptyListView extends AbstractView {
   #filterType = null;
 
   constructor({filterType}) {

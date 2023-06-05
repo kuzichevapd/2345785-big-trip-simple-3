@@ -1,7 +1,6 @@
-import {FilterType, FilterTypeDescription, UpdateType} from '../const-data.js';
-import Filters from '../view/filters-form.js';
-import {render} from '../render';
-import {remove, replace} from '../framework/render';
+import {FilterType, FilterTypeDescription, UpdateType} from '../const-data';
+import FilterView from '../view/filters-form';
+import {render, remove, replace} from '../framework/render';
 
 
 export default class FilterPresenter {
@@ -31,7 +30,7 @@ export default class FilterPresenter {
     const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
-    this.#filterComponent = new Filters({
+    this.#filterComponent = new FilterView({
       filters,
       currentFilterType: this.#modelFilter.filter,
       onFilterTypeChange: this.#handleFilterTypeChange

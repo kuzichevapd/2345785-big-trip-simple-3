@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
-import {isSelectedOption} from '../sort.js';
-import {SortType, SortTypeDescription} from '../const-data.js';
+import {isSelectedOption} from '../sort';
+import {SortType, SortTypeDescription} from '../const-data';
 
 function createSortItemTemplate(sortType, currentSortType) {
   return `
@@ -19,7 +19,7 @@ function createSortingTemplate(currentSortType) {
   );
 }
 
-export default class Sorting extends AbstractView {
+export default class EventSortingView extends AbstractView {
   #currentSortType = null;
   #handleSortTypeChange = null;
 

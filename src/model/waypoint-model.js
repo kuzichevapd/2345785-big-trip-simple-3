@@ -1,7 +1,7 @@
 import Observable from '../framework/observable';
-import {UpdateType} from '../const-data.js';
+import {UpdateType} from '../const-data';
 
-export default class ModelWaypoint extends Observable{
+export default class WaypointModel extends Observable{
   #waypoints = [];
   #waypointsApi = null;
 

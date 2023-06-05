@@ -1,11 +1,11 @@
-import ModelDestinations from './model/destination-model.js';
+import DestinationModel from './model/destination-model.js';
 import Presenter from './presenter/presenter.js';
-import ModelWaypoint from './model/waypoint-model.js';
-import ModelFilters from './model/filter-model.js';
+import WaypointModel from './model/waypoint-model.js';
+import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
-import {render} from './render';
-import NewWaypointButton from './view/waypoint-button-form.js';
-import ModelOffers from './model/offer-model.js';
+import {render} from './framework/render.js';
+import NewWaypointButton from './view/new-waypoint-button-form.js';
+import OfferModel from './model/offer-model.js';
 import WaypointsApi from './api.js';
 
 const siteHeaderElement = document.querySelector('.trip-controls__filters');
@@ -17,10 +17,10 @@ const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
 
 const waypointsApi = new WaypointsApi(END_POINT, AUTHORIZATION);
 
-const modelWaypoints = new ModelWaypoint(waypointsApi);
-const modelOffers = new ModelOffers(waypointsApi);
-const modelDestinations = new ModelDestinations(waypointsApi);
-const modelFilter = new ModelFilters();
+const modelWaypoints = new WaypointModel(waypointsApi);
+const modelOffers = new OfferModel(waypointsApi);
+const modelDestinations = new DestinationModel(waypointsApi);
+const modelFilter = new FilterModel();
 
 const presenter = new Presenter({
   boardContainer: container,

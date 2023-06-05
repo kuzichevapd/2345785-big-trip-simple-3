@@ -1,13 +1,13 @@
-import Sorting from '../view/event-sorting-form.js';
-import WaypointList from '../view/events-list-form.js';
-import NoWaypointMessage from '../view/empty-list-form.js';
+import EventSortingView from '../view/event-sorting-form';
+import EventsListView from '../view/events-list-form';
+import EmptyListView from '../view/empty-list-form';
 import {remove, render, RenderPosition} from '../framework/render';
-import WaypointPresenter from './waypoint-presenter.js';
-import {FilterType, SortType, UpdateType, UserAction} from '../const-data.js';
-import {sorts} from '../sort.js';
-import {filter} from '../util.js';
-import NewWaypointPresenter from './new-waypoint-presenter.js';
-import LoadingView from '../view/loading-form.js';
+import WaypointPresenter from './waypoint-presenter';
+import {FilterType, SortType, UpdateType, UserAction} from '../const-data';
+import {sorts} from '../sort';
+import {filter} from '../util';
+import NewWaypointPresenter from './new-waypoint-presenter';
+import LoadingView from '../view/loading-form';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 const TimeLimit = {
@@ -16,7 +16,7 @@ const TimeLimit = {
 };
 
 export default class Presenter {
-  #waypointListComponent = new WaypointList();
+  #waypointListComponent = new EventsListView();
   #waypointPresenter = new Map();
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
@@ -78,7 +78,7 @@ export default class Presenter {
   }
 
   #renderSort() {
-    this.#sortComponent = new Sorting({
+    this.#sortComponent = new EventSortingView({
       currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
@@ -86,7 +86,7 @@ export default class Presenter {
   }
 
   #renderNoWaypoint() {
-    this.#noWaypointMessage = new NoWaypointMessage({
+    this.#noWaypointMessage = new EmptyListView({
       filterType: this.#filterType
     });
     render(this.#noWaypointMessage, this.#boardContainer, RenderPosition.AFTERBEGIN);

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {SortType} from './const-data.js';
+import {SortType} from './const-data';
 
 const offOptions = ['event', 'offer'];
 const isSelectedOption = (sortType) => (offOptions.includes(sortType) ? 'disabled' : '');

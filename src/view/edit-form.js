@@ -1,6 +1,6 @@
-import {getDateYears, getItemFromItemsById} from '../util.js';
-import {pointTypes} from '../const-data.js';
-import {makeFirstLetterUpperCase} from '../util.js';
+import {getDateYears, getItemFromItemsById} from '../util';
+import {pointTypes} from '../const-data';
+import {makeFirstLetterUpperCase} from '../util';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
@@ -140,7 +140,7 @@ function createEditFormTemplate(isEditForm, oneWaypoint, offers, destinations) {
   );
 }
 
-export default class EditForm extends AbstractStatefulView {
+export default class EditFormView extends AbstractStatefulView {
   #handleRollUp = null;
   #handleSubmit = null;
   #isEditForm = null;
@@ -179,7 +179,7 @@ export default class EditForm extends AbstractStatefulView {
     onDeleteClick
   }) {
     super();
-    this._setState(EditForm.parseWaypointToState(oneWaypoint, offers));
+    this._setState(EditFormView.parseWaypointToState(oneWaypoint, offers));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#isEditForm = isEditForm;
@@ -222,7 +222,7 @@ export default class EditForm extends AbstractStatefulView {
 
   reset(waypoint) {
     this.updateElement(
-      EditForm.parseWaypointToState(waypoint, this.#offers),
+      EditFormView.parseWaypointToState(waypoint, this.#offers),
     );
   }
 
@@ -232,7 +232,7 @@ export default class EditForm extends AbstractStatefulView {
 
   #submitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit(EditForm.parseStateToWaypoint(this._state));
+    this.#handleSubmit(EditFormView.parseStateToWaypoint(this._state));
   };
 
   #rollUpButtonHandler = (evt) => {
@@ -323,6 +323,6 @@ export default class EditForm extends AbstractStatefulView {
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditForm.parseStateToWaypoint(this._state));
+    this.#handleDeleteClick(EditFormView.parseStateToWaypoint(this._state));
   };
 }

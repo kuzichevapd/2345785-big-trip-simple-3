@@ -1,8 +1,7 @@
-import {render, RenderPosition} from '../render';
-import {UpdateType, UserAction} from '../const-data.js';
-import EditForm from '../view/edit-form.js';
-import {remove} from '../framework/render';
-import {isEsc} from '../util.js';
+import {UpdateType, UserAction} from '../const-data';
+import EditFormView from '../view/edit-form';
+import {remove, render, RenderPosition} from '../framework/render';
+import {isEsc} from '../util';
 
 export default class NewWaypointPresenter {
   #handleDataChange = null;
@@ -21,7 +20,7 @@ export default class NewWaypointPresenter {
       return;
     }
 
-    this.#waypointEditComponent = new EditForm({
+    this.#waypointEditComponent = new EditFormView({
       destinations: destinations,
       offers: offers,
       onSubmit: this.#handleFormSubmit,
