@@ -21,7 +21,10 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    return [FilterType.EVERYTHING, FilterType.FUTURE, FilterType.PAST].map((type) => ({ type, name: FilterTypeDescription[type]}));
+    return [FilterType.EVERYTHING, FilterType.FUTURE, FilterType.PAST].map((type) => ({
+      type,
+      name: FilterTypeDescription[type]
+    }));
   }
 
   init() {
