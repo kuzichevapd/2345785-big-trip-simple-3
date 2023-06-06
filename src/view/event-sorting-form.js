@@ -27,14 +27,14 @@ export default class EventSortingView extends AbstractView {
     super();
     this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
-    this.element.addEventListener('change', this.#sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#handleSortTypeChangeFrom);
   }
 
   get template() {
     return createSortingTemplate(this.#currentSortType);
   }
 
-  #sortTypeChangeHandler = (evt) => {
+  #handleSortTypeChangeFrom = (evt) => {
     evt.preventDefault();
     this.#handleSortTypeChange(evt.target.value);
   };

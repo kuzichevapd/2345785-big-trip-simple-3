@@ -31,7 +31,7 @@ export default class NewWaypointPresenter {
     render(this.#waypointEditComponent, this.#waypointListContainer,
       RenderPosition.AFTERBEGIN);
 
-    document.body.addEventListener('keydown', this.#ecsKeyDownHandler);
+    document.body.addEventListener('keydown', this.#handleEcsKeyDown);
   }
 
   setSaving() {
@@ -63,11 +63,11 @@ export default class NewWaypointPresenter {
     remove(this.#waypointEditComponent);
     this.#waypointEditComponent = null;
 
-    document.body.removeEventListener('keydown', this.#ecsKeyDownHandler);
+    document.body.removeEventListener('keydown', this.#handleEcsKeyDown);
   }
 
 
-  #ecsKeyDownHandler = (evt) => {
+  #handleEcsKeyDown = (evt) => {
     if (isEsc(evt)) {
       evt.preventDefault();
       this.destroy();

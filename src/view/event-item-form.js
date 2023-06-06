@@ -59,14 +59,14 @@ export default class EventItemView extends AbstractView {
     this.#offers = offers;
     this.#destinations = destinations;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#handleClicker);
   }
 
   get template() {
     return createWaypointTemplate(this.#oneWaypoint, this.#destinations, this.#offers);
   }
 
-  #clickHandler = (evt) => {
+  #handleClicker = (evt) => {
     evt.preventDefault();
     this.#handleClick();
   };

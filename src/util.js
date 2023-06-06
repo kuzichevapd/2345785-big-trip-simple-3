@@ -7,8 +7,6 @@ const EVENT_YEARS_FORMAT = 'DD/MM/YY HH:mm';
 
 export const isEsc = (evt) => evt.key === 'Escape';
 
-export const getItemFromItemsById = (items, id) => (items.find((item) => item.id === id));
-
 export const getDateWithoutT = (dateStr) => dateStr.substring(0, dateStr.indexOf('T'));
 
 export const getDateDayAndMo = (dateStr) => dayjs(dateStr).format(EVENT_DATE_FORMAT);
@@ -32,3 +30,5 @@ export const filter = {
 };
 
 export const isDatesEqual = (date1, date2) => (!date1 && !date2) || dayjs(date1).isSame(date2, 'D');
+
+export const getItemFromItemsById = (items, id) => (items.find((item) => item.id === id));
