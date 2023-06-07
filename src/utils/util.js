@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import {FilterType} from './const-data';
 
 const EVENT_DATE_FORMAT = 'MMM D';
 const EVENT_TIME_FORMAT = 'H:mm';
@@ -22,12 +21,6 @@ export const makeFirstLetterUpperCase = (word) => word.charAt(0).toUpperCase() +
 export const isFuture = (date) => date && dayjs().isBefore(date, 'D');
 
 export const isPast = (date) => date && dayjs().isAfter(date, 'D');
-
-export const filter = {
-  [FilterType.FUTURE]: (waypoints) => waypoints.filter((waypoint) => isFuture(waypoint.dateFrom)),
-  [FilterType.EVERYTHING]: (waypoints) => waypoints,
-  [FilterType.PAST]: (waypoints) => waypoints.filter((waypoint) => isPast(waypoint.dateFrom)),
-};
 
 export const isDatesEqual = (date1, date2) => (!date1 && !date2) || dayjs(date1).isSame(date2, 'D');
 

@@ -1,4 +1,4 @@
-import {FilterType, FilterTypeDescription, UpdateType} from '../const-data';
+import {FILTER_TYPE, FILTER_TYPE_DESCRIPTION, UPDATE_TYPE} from '../const-data';
 import FilterView from '../view/filters-form';
 import {render, remove, replace} from '../framework/render';
 
@@ -20,9 +20,9 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    return [FilterType.EVERYTHING, FilterType.FUTURE, FilterType.PAST].map((type) => ({
+    return [FILTER_TYPE.EVERYTHING, FILTER_TYPE.FUTURE, FILTER_TYPE.PAST].map((type) => ({
       type,
-      name: FilterTypeDescription[type]
+      name: FILTER_TYPE_DESCRIPTION[type]
     }));
   }
 
@@ -54,6 +54,6 @@ export default class FilterPresenter {
       return;
     }
 
-    this.#modelFilter.setFilter(UpdateType.MAJOR, filterType);
+    this.#modelFilter.setFilter(UPDATE_TYPE.MAJOR, filterType);
   };
 }

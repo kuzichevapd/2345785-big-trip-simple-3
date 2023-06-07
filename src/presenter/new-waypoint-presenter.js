@@ -1,7 +1,7 @@
-import {UpdateType, UserAction} from '../const-data';
+import {UPDATE_TYPE, USER_ACTION} from '../const-data';
 import EditFormView from '../view/edit-form';
 import {remove, render, RenderPosition} from '../framework/render';
-import {isEsc} from '../util';
+import {isEsc} from '../utils/util';
 
 export default class NewWaypointPresenter {
   #handleDataChange = null;
@@ -76,8 +76,8 @@ export default class NewWaypointPresenter {
 
   #handleFormSubmit = (waypoint) => {
     this.#handleDataChange(
-      UserAction.ADD_WAYPOINT,
-      UpdateType.MINOR,
+      USER_ACTION.ADD_WAYPOINT,
+      UPDATE_TYPE.MINOR,
 
       this.#deleteId(waypoint)
     );

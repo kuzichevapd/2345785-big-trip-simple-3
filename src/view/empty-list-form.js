@@ -1,10 +1,10 @@
 import AbstractView from '../framework/view/abstract-view';
-import {FilterType} from '../const-data';
+import {FILTER_TYPE} from '../const-data';
 
 const NoTasksTextType = {
-  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no future events now',
-  [FilterType.PAST]: 'There are no past events now',
+  [FILTER_TYPE.EVERYTHING]: 'Click New Event to create your first point',
+  [FILTER_TYPE.FUTURE]: 'There are no future events now',
+  [FILTER_TYPE.PAST]: 'There are no past events now',
 };
 
 function createNoWaypoitsMessageTemplate(filterType) {
