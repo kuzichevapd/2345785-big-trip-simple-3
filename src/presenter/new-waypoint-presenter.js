@@ -1,8 +1,7 @@
-import {render, RenderPosition} from '../render';
-import {UpdateType, UserAction} from '../const-data.js';
-import EditForm from '../view/edit-form.js';
-import {remove} from '../framework/render';
-import {isEsc} from '../util.js';
+import {UPDATE_TYPE, USER_ACTION} from '../const-data';
+import EditFormView from '../view/edit-form';
+import {remove, render, RenderPosition} from '../framework/render';
+import {isEsc} from '../utils/util';
 
 export default class NewWaypointPresenter {
   #handleDataChange = null;
@@ -21,7 +20,7 @@ export default class NewWaypointPresenter {
       return;
     }
 
-    this.#waypointEditComponent = new EditForm({
+    this.#waypointEditComponent = new EditFormView({
       destinations: destinations,
       offers: offers,
       onSubmit: this.#handleFormSubmit,
@@ -32,7 +31,7 @@ export default class NewWaypointPresenter {
     render(this.#waypointEditComponent, this.#waypointListContainer,
       RenderPosition.AFTERBEGIN);
 
-    document.body.addEventListener('keydown', this.#ecsKeyDownHandler);
+    document.body.addEventListener('keydown', this.#handleEcsKeyDown);
   }
 
   setSaving() {
@@ -64,11 +63,11 @@ export default class NewWaypointPresenter {
     remove(this.#waypointEditComponent);
     this.#waypointEditComponent = null;
 
-    document.body.removeEventListener('keydown', this.#ecsKeyDownHandler);
+    document.body.removeEventListener('keydown', this.#handleEcsKeyDown);
   }
 
 
-  #ecsKeyDownHandler = (evt) => {
+  #handleEcsKeyDown = (evt) => {
     if (isEsc(evt)) {
       evt.preventDefault();
       this.destroy();
@@ -77,8 +76,8 @@ export default class NewWaypointPresenter {
 
   #handleFormSubmit = (waypoint) => {
     this.#handleDataChange(
-      UserAction.ADD_WAYPOINT,
-      UpdateType.MINOR,
+      USER_ACTION.ADD_WAYPOINT,
+      UPDATE_TYPE.MINOR,
 
       this.#deleteId(waypoint)
     );

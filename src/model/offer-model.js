@@ -1,5 +1,5 @@
 import Observable from '../framework/observable';
-export default class ModelOffers extends Observable{
+export default class OfferModel extends Observable{
   #offers = [];
   #waypointsApi = null;
 

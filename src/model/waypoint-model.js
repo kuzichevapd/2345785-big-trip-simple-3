@@ -1,7 +1,7 @@
 import Observable from '../framework/observable';
-import {UpdateType} from '../const-data.js';
+import {UPDATE_TYPE} from '../const-data';
 
-export default class ModelWaypoint extends Observable{
+export default class WaypointModel extends Observable{
   #waypoints = [];
   #waypointsApi = null;
 
@@ -21,7 +21,7 @@ export default class ModelWaypoint extends Observable{
     } catch(err) {
       this.#waypoints = [];
     }
-    this._notify(UpdateType.INIT);
+    this._notify(UPDATE_TYPE.INIT);
   }
 
   async updateWaypoint(updateType, update) {

@@ -1,9 +1,8 @@
-import {getDateYears, getItemFromItemsById} from '../util.js';
-import {pointTypes} from '../const-data.js';
-import {makeFirstLetterUpperCase} from '../util.js';
+import {getDateYears, getItemFromItemsById,makeFirstLetterUpperCase} from '../utils/util';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+import {POINT_TYPES} from '../const-data';
 import he from 'he';
 
 const BLANK_WAYPOINT = {
@@ -52,7 +51,7 @@ function createImgForDestion(destination) {
 }
 
 function createEventTypeListTemplate(currentType, id) {
-  return pointTypes.map((type) => `
+  return POINT_TYPES.map((type) => `
   <div class="event__type-item">
     <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${(type === currentType) ? 'checked' : ''}>
     <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${makeFirstLetterUpperCase(type)}</label>
@@ -140,7 +139,7 @@ function createEditFormTemplate(isEditForm, oneWaypoint, offers, destinations) {
   );
 }
 
-export default class EditForm extends AbstractStatefulView {
+export default class EditFormView extends AbstractStatefulView {
   #handleRollUp = null;
   #handleSubmit = null;
   #isEditForm = null;
@@ -179,7 +178,7 @@ export default class EditForm extends AbstractStatefulView {
     onDeleteClick
   }) {
     super();
-    this._setState(EditForm.parseWaypointToState(oneWaypoint, offers));
+    this._setState(EditFormView.parseWaypointToState(oneWaypoint, offers));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#isEditForm = isEditForm;
@@ -192,14 +191,14 @@ export default class EditForm extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#submitHandler);
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationHandler);
-    this.element.querySelector('.event__input--price').addEventListener('input', this.#priceInputHandler);
-    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersHandler);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#handleSubmitTo);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#handleEventType);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#handleDestination);
+    this.element.querySelector('.event__input--price').addEventListener('input', this.#handlePriceInput);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#handleOffers);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#handleFormDeleteClick);
     if (this.#isEditForm) {
-      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollUpButtonHandler);
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#handleRollUpButton);
     }
     this.#setFromDatePicker();
     this.#setToDatePicker();
@@ -222,7 +221,7 @@ export default class EditForm extends AbstractStatefulView {
 
   reset(waypoint) {
     this.updateElement(
-      EditForm.parseWaypointToState(waypoint, this.#offers),
+      EditFormView.parseWaypointToState(waypoint, this.#offers),
     );
   }
 
@@ -230,18 +229,18 @@ export default class EditForm extends AbstractStatefulView {
     return createEditFormTemplate(this.#isEditForm, this._state, this.#offers, this.#destinations);
   }
 
-  #submitHandler = (evt) => {
+  #handleSubmitTo = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit(EditForm.parseStateToWaypoint(this._state));
+    this.#handleSubmit(EditFormView.parseStateToWaypoint(this._state));
   };
 
-  #rollUpButtonHandler = (evt) => {
+  #handleRollUpButton = (evt) => {
     evt.preventDefault();
     this.#handleRollUp();
   };
 
 
-  #fromDateChangeHandler = ([userDate]) => {
+  #handleFromDateChange = ([userDate]) => {
     if (userDate) {
       this._setState({
         dateFrom: userDate.toISOString(),
@@ -251,7 +250,7 @@ export default class EditForm extends AbstractStatefulView {
   };
 
 
-  #toDateChangeHandler = ([userDate]) => {
+  #handleToDateChange = ([userDate]) => {
     if (userDate) {
       this._setState({
         dateTo: userDate.toISOString(),
@@ -266,7 +265,7 @@ export default class EditForm extends AbstractStatefulView {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
         defaultDate: getDateYears(this._state.dateFrom),
-        onChange: this.#fromDateChangeHandler,
+        onChange: this.#handleFromDateChange,
       },
     );
   }
@@ -279,12 +278,12 @@ export default class EditForm extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         defaultDate: getDateYears(this._state.dateTo),
         minDate: getDateYears(this._state.dateFrom),
-        onChange: this.#toDateChangeHandler,
+        onChange: this.#handleToDateChange,
       },
     );
   }
 
-  #eventTypeHandler = (evt) => {
+  #handleEventType = (evt) => {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.value,
@@ -293,21 +292,21 @@ export default class EditForm extends AbstractStatefulView {
     });
   };
 
-  #destinationHandler = (evt) => {
+  #handleDestination = (evt) => {
     evt.preventDefault();
     this.updateElement({
       destination: this.#destinations.find((destination) => destination.name === evt.target.value).id,
     });
   };
 
-  #priceInputHandler = (evt) => {
+  #handlePriceInput = (evt) => {
     evt.preventDefault();
     this._setState({
       basePrice: evt.target.value,
     });
   };
 
-  #offersHandler = (evt) => {
+  #handleOffers = (evt) => {
     evt.preventDefault();
     const clickedOfferId = Number(evt.target.name.split('-').at(-1));
     const newOffersIds = this._state.offersIDs.slice();
@@ -321,8 +320,8 @@ export default class EditForm extends AbstractStatefulView {
     });
   };
 
-  #formDeleteClickHandler = (evt) => {
+  #handleFormDeleteClick = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditForm.parseStateToWaypoint(this._state));
+    this.#handleDeleteClick(EditFormView.parseStateToWaypoint(this._state));
   };
 }

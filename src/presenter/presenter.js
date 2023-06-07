@@ -1,13 +1,13 @@
-import Sorting from '../view/event-sorting-form.js';
-import WaypointList from '../view/events-list-form.js';
-import NoWaypointMessage from '../view/empty-list-form.js';
+import EventSortingView from '../view/event-sorting-form';
+import EventsListView from '../view/events-list-form';
+import EmptyListView from '../view/empty-list-form';
 import {remove, render, RenderPosition} from '../framework/render';
-import WaypointPresenter from './waypoint-presenter.js';
-import {FilterType, SortType, UpdateType, UserAction} from '../const-data.js';
-import {sorts} from '../sort.js';
-import {filter} from '../util.js';
-import NewWaypointPresenter from './new-waypoint-presenter.js';
-import LoadingView from '../view/loading-form.js';
+import WaypointPresenter from './waypoint-presenter';
+import {FILTER_TYPE, SORT_TYPE, UPDATE_TYPE, USER_ACTION} from '../const-data';
+import {filter} from '../utils/filter';
+import {sorts} from '../utils/sort';
+import NewWaypointPresenter from './new-waypoint-presenter';
+import LoadingView from '../view/loading-form';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 const TimeLimit = {
@@ -16,10 +16,10 @@ const TimeLimit = {
 };
 
 export default class Presenter {
-  #waypointListComponent = new WaypointList();
+  #waypointListComponent = new EventsListView();
   #waypointPresenter = new Map();
-  #currentSortType = SortType.DAY;
-  #filterType = FilterType.EVERYTHING;
+  #currentSortType = SORT_TYPE.DAY;
+  #filterType = FILTER_TYPE.EVERYTHING;
   #loadingComponent = new LoadingView();
   #isLoading = true;
   #boardContainer = null;
@@ -54,7 +54,7 @@ export default class Presenter {
 
   get waypoints() {
     this.#filterType = this.#modelFilter.filter;
-    const waypoints = this.#waypointsModel.waypoints.sort(sorts[SortType.TIME]);
+    const waypoints = this.#waypointsModel.waypoints.sort(sorts[SORT_TYPE.TIME]);
     const filteredWaypoints = filter[this.#filterType](waypoints);
     return (sorts[this.#currentSortType]) ? filteredWaypoints.sort(sorts[this.#currentSortType]) : filteredWaypoints;
   }
@@ -72,13 +72,13 @@ export default class Presenter {
   }
 
   createWaypoint() {
-    this.#currentSortType = SortType.DAY;
-    this.#modelFilter.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#currentSortType = SORT_TYPE.DAY;
+    this.#modelFilter.setFilter(UPDATE_TYPE.MAJOR, FILTER_TYPE.EVERYTHING);
     this.#newWaypointPresenter.init(this.destinations, this.offers);
   }
 
   #renderSort() {
-    this.#sortComponent = new Sorting({
+    this.#sortComponent = new EventSortingView({
       currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
@@ -86,7 +86,7 @@ export default class Presenter {
   }
 
   #renderNoWaypoint() {
-    this.#noWaypointMessage = new NoWaypointMessage({
+    this.#noWaypointMessage = new EmptyListView({
       filterType: this.#filterType
     });
     render(this.#noWaypointMessage, this.#boardContainer, RenderPosition.AFTERBEGIN);
@@ -145,7 +145,7 @@ export default class Presenter {
   #handleViewAction = async (actionType, updateType, update) => {
     this.#uiBlocker.block();
     switch (actionType) {
-      case UserAction.ADD_WAYPOINT:
+      case USER_ACTION.ADD_WAYPOINT:
         this.#newWaypointPresenter.setSaving();
         try {
           await this.#waypointsModel.addWaypoint(updateType, update);
@@ -153,7 +153,7 @@ export default class Presenter {
           this.#waypointPresenter.get(update.id).setAborting();
         }
         break;
-      case UserAction.UPDATE_WAYPOINT:
+      case USER_ACTION.UPDATE_WAYPOINT:
         this.#waypointPresenter.get(update.id).setSaving();
         try {
           await this.#waypointsModel.updateWaypoint(updateType, update);
@@ -161,7 +161,7 @@ export default class Presenter {
           this.#waypointPresenter.get(update.id).setAborting();
         }
         break;
-      case UserAction.DELETE_WAYPOINT:
+      case USER_ACTION.DELETE_WAYPOINT:
         this.#waypointPresenter.get(update.id).setDeleting();
         try {
           await this.#waypointsModel.deleteWaypoint(updateType, update);
@@ -175,18 +175,18 @@ export default class Presenter {
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      case UpdateType.PATCH:
+      case UPDATE_TYPE.PATCH:
         this.#waypointPresenter.get(data.id).init(data, this.destinations, this.offers);
         break;
-      case UpdateType.MINOR:
+      case UPDATE_TYPE.MINOR:
         this.#clearBoard();
         this.#renderBoard();
         break;
-      case UpdateType.MAJOR:
+      case UPDATE_TYPE.MAJOR:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
-      case UpdateType.INIT:
+      case UPDATE_TYPE.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard();
@@ -207,7 +207,7 @@ export default class Presenter {
     }
 
     if (resetSortType) {
-      this.#currentSortType = SortType.DAY;
+      this.#currentSortType = SORT_TYPE.DAY;
     }
   }
 }

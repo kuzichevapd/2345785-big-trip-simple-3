@@ -1,17 +1,17 @@
 import AbstractView from '../framework/view/abstract-view';
-import {isSelectedOption} from '../sort.js';
-import {SortType, SortTypeDescription} from '../const-data.js';
+import {isSelectedOption} from '../utils/sort';
+import {SORT_TYPE, SORT_TYPE_DESCRIPTION} from '../const-data';
 
 function createSortItemTemplate(sortType, currentSortType) {
   return `
   <div class="trip-sort__item  trip-sort__item--${sortType}">
     <input id="${sortType}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="${sortType}"  ${isSelectedOption(sortType)} ${(sortType === currentSortType ? 'checked' : '')}>
-    <label class="trip-sort__btn" for="${sortType}">${SortTypeDescription[sortType]}</label>
+    <label class="trip-sort__btn" for="${sortType}">${SORT_TYPE_DESCRIPTION[sortType]}</label>
   </div>`;
 }
 
 function createSortingTemplate(currentSortType) {
-  const sortItemsTemplate = Object.keys(SortType).map((sortType) => createSortItemTemplate(SortType[sortType], currentSortType)).join('');
+  const sortItemsTemplate = Object.keys(SORT_TYPE).map((sortType) => createSortItemTemplate(SORT_TYPE[sortType], currentSortType)).join('');
   return (`
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${sortItemsTemplate}
@@ -19,7 +19,7 @@ function createSortingTemplate(currentSortType) {
   );
 }
 
-export default class Sorting extends AbstractView {
+export default class EventSortingView extends AbstractView {
   #currentSortType = null;
   #handleSortTypeChange = null;
 
@@ -27,14 +27,14 @@ export default class Sorting extends AbstractView {
     super();
     this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
-    this.element.addEventListener('change', this.#sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#handleSortTypeChangeFrom);
   }
 
   get template() {
     return createSortingTemplate(this.#currentSortType);
   }
 
-  #sortTypeChangeHandler = (evt) => {
+  #handleSortTypeChangeFrom = (evt) => {
     evt.preventDefault();
     this.#handleSortTypeChange(evt.target.value);
   };
